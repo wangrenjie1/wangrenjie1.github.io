@@ -14,7 +14,7 @@ timezone: Asia/Shanghai
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://wangrenjie1.github.io
-root: /
+root: /public/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
@@ -110,7 +110,7 @@ deploy:
 
 live2d:
   enable: true
-  scriptFrom: local
+  scriptFrom: localgit
   pluginRootPath: live2dw/
   pluginJsPath: lib/
   pluginModelPath: assets/
