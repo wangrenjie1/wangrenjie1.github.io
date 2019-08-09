@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前端架构与性能优化那些事性能优化的学徒工 html数量控制  html css hint 善用css  压缩、合并、文件MD5戳更好的缓存  (引用多个cdn  http1.1有用) 设置为gzip cookie  http2  离线缓存 localstorage  a.js -&amp;gt; a.xxx5.js  active.js 激活a.js   1.eval 2. add塞进    去local">
+<meta name="keywords" content="前端性能优化,架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端架构与性能优化那些事">
+<meta property="og:url" content="https://wangrenjie1.github.io/2019/06/19/前端架构与性能优化那些事/index.html">
+<meta property="og:site_name" content="嘻嘻の哈哈">
+<meta property="og:description" content="前端架构与性能优化那些事性能优化的学徒工 html数量控制  html css hint 善用css  压缩、合并、文件MD5戳更好的缓存  (引用多个cdn  http1.1有用) 设置为gzip cookie  http2  离线缓存 localstorage  a.js -&amp;gt; a.xxx5.js  active.js 激活a.js   1.eval 2. add塞进    去local">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-19T08:31:03.404Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端架构与性能优化那些事">
+<meta name="twitter:description" content="前端架构与性能优化那些事性能优化的学徒工 html数量控制  html css hint 善用css  压缩、合并、文件MD5戳更好的缓存  (引用多个cdn  http1.1有用) 设置为gzip cookie  http2  离线缓存 localstorage  a.js -&amp;gt; a.xxx5.js  active.js 激活a.js   1.eval 2. add塞进    去local">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://wangrenjie1.github.io/2019/06/19/前端架构与性能优化那些事/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端架构与性能优化那些事 | 嘻嘻の哈哈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">嘻嘻の哈哈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Be the best version of you</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/wangrenjie1" class="github-corner" title="Please give a star" aria-label="Please give a star" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wangrenjie1.github.io/2019/06/19/前端架构与性能优化那些事/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Richard">
+      <meta itemprop="description" content="Wechat:kannihappy <br/>Hobbies:打台球,旅游，英语，看电影，无氧运动">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="嘻嘻の哈哈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端架构与性能优化那些事
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-19 16:28:01 / 修改时间：16:31:03" itemprop="dateCreated datePublished" datetime="2019-06-19T16:28:01+08:00">2019-06-19</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端性能优化/" itemprop="url" rel="index"><span itemprop="name">前端性能优化</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前端架构与性能优化那些事"><a href="#前端架构与性能优化那些事" class="headerlink" title="前端架构与性能优化那些事"></a>前端架构与性能优化那些事</h1><h2 id="性能优化的学徒工"><a href="#性能优化的学徒工" class="headerlink" title="性能优化的学徒工"></a>性能优化的学徒工</h2><ul>
+<li><p>html数量控制  html css hint 善用css</p>
+<ul>
+<li><p>压缩、合并、文件MD5戳更好的缓存</p>
+</li>
+<li><p>(引用多个cdn  http1.1有用) 设置为gzip cookie</p>
+</li>
+<li><p>http2</p>
+</li>
+<li><p>离线缓存 localstorage</p>
+<ul>
+<li><p>a.js -&gt; a.xxx5.js</p>
+</li>
+<li><p>active.js 激活a.js   1.eval 2. add塞进 <script> </script></p>
+</li>
+<li><p>去localstorage 中取得的时候  需要判断版本号  是否一致</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 维护一个全局版本 通常webpack直接生成 obj = &#123; a.js :&apos;a.xx5.js&apos; &#125;</span><br><span class="line">2. 建立一个active.js 去激活js</span><br><span class="line">3. 例如请求 a.js</span><br><span class="line">4. active(&quot;a.js&quot;)</span><br><span class="line">5. localStorage[&quot;a.js&quot;] -&gt; script src=&quot;a.js&quot;  没有存过  ajax =&gt;datatype:&apos;text&apos;</span><br><span class="line">                           script src=&quot;a.js&quot; localStorage[&quot;a.js&quot;] = &quot;a.xx5.js&quot;</span><br><span class="line">                                               -&gt; localStorage[&quot;a.xx5.js&quot;] = &quot;js内容&quot; </span><br><span class="line">                        -&gt; script src=&quot;a.js&quot;== obj[&quot;a.js&quot;] 有存过</span><br><span class="line">                        -&gt; eval(localStorage[&quot;a.xx5.js&quot;])</span><br><span class="line">                        -&gt; 请求并重新缓存</span><br><span class="line">6. 总共5M  超过 2.5M出现卡顿</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>广告位置 通过web SQL存储</p>
+</li>
+<li><p><strong>localForage</strong>  <strong>basket.js</strong> 缓存兼容 </p>
+</li>
+</ul>
+</li>
+<li><p>缓存的优先级  cache-control expires etag last-modified</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">last-modified / if-modified-since</span><br><span class="line">    这是一一组请求/相应头</span><br><span class="line">    -&gt; 响应头:</span><br><span class="line">        last-modified: Wed, 16 May 2018 02:57:16 GMT</span><br><span class="line">    -&gt; 请求头:</span><br><span class="line">        if-modified-since: Wed, 16 May 2018 05:55:38 GMT</span><br><span class="line">    服务器器端返回资源时,如果头部带上了了 last-modified, 那么</span><br><span class="line">    资源下次请求时就会把值加入入到请求头 if-modified-since 中，</span><br><span class="line">    服务器可以对比这个值，确定资源是否发生变化，如果没有发生变化，则返回304        </span><br><span class="line"></span><br><span class="line">etag / if-none-match </span><br><span class="line">    这也是一一组请求/相应头 </span><br><span class="line">    -&gt; 响应头:</span><br><span class="line">        etag: &quot;D5FC8B85A045FF720547BC36FC872550&quot;</span><br><span class="line">    -&gt; 请求头:</span><br><span class="line">        if-none-match:&quot;D5FC8B85A045FF720547BC36FC872550&quot;</span><br><span class="line">    原理理类似,服务器器端返回资源时,如果头部带上了了 etag,</span><br><span class="line">    那么资源下次请求时就会把值加入入到请求头 if-none-match 中,</span><br><span class="line">    服务器器可以对比这个值,确定资源是否发生变化,如果没有发生变化,则返回 304</span><br><span class="line">expires</span><br><span class="line">    -&gt; expires: Thu, 16 May 2019 03:05:59 GMT</span><br><span class="line">    在 http 头中设置一个过期时间,在这个过期时间之前,浏览器的请求都不会发出，</span><br><span class="line">    而是自动从缓存中读取文件，除非缓存被清空，或者强制刷新。缺陷在于，服务器时间和</span><br><span class="line">    用户端时间可能存在不一致，所以HTTP1.1加入了cache-control头来改进这个问题</span><br><span class="line">cache-control</span><br><span class="line">    设置过期的时间长度（秒）,在这个时间范围内，浏览器请求都会直接读取缓存。当expires和</span><br><span class="line">    cache-control都存在时，cache-control的优先级更高</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>http2 多路复用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">浏览器器请求//xx.cn/a.js</span><br><span class="line">     --&gt;解析域名</span><br><span class="line">     —&gt;HTTP连接</span><br><span class="line">     —&gt;服务器器处理文件</span><br><span class="line">     —&gt;返回数据</span><br><span class="line">     -&gt;浏览器器解析、渲染文文件。</span><br><span class="line">     Keep-Alive解决的核心心问题就在此,一定时间内,同一域名多次请求数据,只建立一次HTTP请求,其他请可复用每一次建立的连接通道,以达到提高请求效率的问题。一定时间是可以配置的,HTTP1.1还是存在效率问题</span><br><span class="line">         第一个:串串行行行的文文件传输。</span><br><span class="line">         第二个:连接数过多。HTTP/2对同一域名下所有请求都是基于流,也就是说同一域名不管访问多少文件,也只建立一路连接。同样Apache的最大大连接数为300,因为有了这个新特性,最大的并发就可以提升到300,比原来提升了6倍!</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="渲染中的性能优化"><a href="#渲染中的性能优化" class="headerlink" title="渲染中的性能优化"></a>渲染中的性能优化</h2><pre><code>- Rendering 
+  - Paint flashing 重绘
+  - FPS meter 一秒绘制多少帧
+- Performance
+  - loading 加载时间
+  - scripting 脚本执行时间
+  - rendering 重排时间
+  - painting  重绘时间
+  - system  系统执行时间
+  - idle    空闲时间
+  - event log</code></pre><h3 id="重绘和重排-网页整体渲染过程"><a href="#重绘和重排-网页整体渲染过程" class="headerlink" title="重绘和重排 网页整体渲染过程"></a>重绘和重排 网页整体渲染过程</h3><ol>
+<li>获取dom 分割层</li>
+<li>根据每层节点结算样式结果  Recalculate Style</li>
+<li>为每个节点生成图形和位置 Layout</li>
+<li>将每个节点绘制填充到当前帧的位图中</li>
+<li>将图层上传到gpu(显卡) gpu bimap 专门处理图像</li>
+<li>显卡根据符合要求的多个图层合并生成图像 Composite Layers</li>
+</ol>
+<blockquote>
+<p>总结 渲染阶段 ： Layout -&gt; Paint -&gt; Composite Layers</p>
+</blockquote>
+<h3 id="什么情况下会分层"><a href="#什么情况下会分层" class="headerlink" title="什么情况下会分层"></a>什么情况下会分层</h3><p>根元素、position、transfrom、半透明、滤镜、canvas、video、overflow</p>
+<p>什么时候gpu直接参与？：<br>css3d,video,webglk,transform,滤镜 硬件加速</p>
+<p><strong>重排一定会引起重绘</strong> <strong>重绘不一定引起重排</strong></p>
+<h3 id="重排引起的情况"><a href="#重排引起的情况" class="headerlink" title="重排引起的情况"></a>重排引起的情况</h3><ol>
+<li>添加或者删除元素</li>
+<li>元素位置的变化</li>
+<li>元素变化尺寸</li>
+<li>页面的初始化</li>
+<li>读取一些属性会引起重排 offset、scrolltop、client、width <ul>
+<li>requestAnimationFrame ==&gt; 下一帧</li>
+</ul>
+</li>
+</ol>
+<h2 id="页面加载的性能优化"><a href="#页面加载的性能优化" class="headerlink" title="页面加载的性能优化"></a>页面加载的性能优化</h2><ul>
+<li>FP: 仅有一个div根节点</li>
+<li>FCP: 包含页面的基本框架，但没有数据</li>
+<li>FMP: 包括页面所有元素以及数据<ul>
+<li>window.performance.getEntriesByType(“paint”)// 获取重绘的时间</li>
+<li>const observer new performanceObserver(); observer.observe({entryTypes:[‘paint’]}) </li>
+<li>const observer new performanceObserver(); observer.observe({entryTypes:[‘longtask’]}) </li>
+<li>requestAnimationFrame() //每一帧都要渲染</li>
+<li>requestIdleCallback()  //</li>
+</ul>
+</li>
+</ul>
+<h2 id="nodeJS性能优化"><a href="#nodeJS性能优化" class="headerlink" title="nodeJS性能优化"></a>nodeJS性能优化</h2><p>未完待续</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/前端性能优化/" rel="tag"><i class="fa fa-tag"></i> 前端性能优化</a>
+          
+            <a href="/tags/架构/" rel="tag"><i class="fa fa-tag"></i> 架构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/19/前端性能优化基础知识/" rel="next" title="前端性能优化基础知识">
+                <i class="fa fa-chevron-left"></i> 前端性能优化基础知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/19/前端错误处理那些事/" rel="prev" title="前端错误处理那些事">
+                前端错误处理那些事 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/touxiang.png" alt="Richard">
+            
+              <p class="site-author-name" itemprop="name">Richard</p>
+              <div class="site-description motion-element" itemprop="description">Wechat:kannihappy <br>Hobbies:打台球,旅游，英语，看电影，无氧运动</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/wangrenjie1" title="GitHub &rarr; https://github.com/wangrenjie1" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://juejin.im/user/5ca190cfe51d45054e3b95f6" title="掘金 &rarr; https://juejin.im/user/5ca190cfe51d45054e3b95f6" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>掘金</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前端架构与性能优化那些事"><span class="nav-number">1.</span> <span class="nav-text">前端架构与性能优化那些事</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化的学徒工"><span class="nav-number">1.1.</span> <span class="nav-text">性能优化的学徒工</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染中的性能优化"><span class="nav-number">1.2.</span> <span class="nav-text">渲染中的性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重绘和重排-网页整体渲染过程"><span class="nav-number">1.2.1.</span> <span class="nav-text">重绘和重排 网页整体渲染过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么情况下会分层"><span class="nav-number">1.2.2.</span> <span class="nav-text">什么情况下会分层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重排引起的情况"><span class="nav-number">1.2.3.</span> <span class="nav-text">重排引起的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面加载的性能优化"><span class="nav-number">1.3.</span> <span class="nav-text">页面加载的性能优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nodeJS性能优化"><span class="nav-number">1.4.</span> <span class="nav-text">nodeJS性能优化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">^_^ ~~ My pleasure can help you, could you please give me a star on github.</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,0" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":200,"height":400,"hOffset":10,"vOffset":20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+<script type="text/javascript" src="/js/clicklove.js"></script>
+</html>

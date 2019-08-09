@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="大规模NodeJS项目架构与优化前端使用NodeJS的意义与优势 proxy代理跨越，自给自足提供api,前端控制路由，前后端完全分离 vue的同构化，实现SSR服务端渲染，将组件拼接成html,返回给用户,实现性能优化   做了proxy代理，可以削减api Nodejs &amp;lt;==&amp;gt; java 之间的通信很快 100ms以内搞定 一般10ms,不用使用http,http是昂贵和缓慢的">
+<meta name="keywords" content="nodejs,架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大规模NodeJS项目架构与优化">
+<meta property="og:url" content="https://wangrenjie1.github.io/2019/06/18/大规模NodeJS项目架构与优化/index.html">
+<meta property="og:site_name" content="嘻嘻の哈哈">
+<meta property="og:description" content="大规模NodeJS项目架构与优化前端使用NodeJS的意义与优势 proxy代理跨越，自给自足提供api,前端控制路由，前后端完全分离 vue的同构化，实现SSR服务端渲染，将组件拼接成html,返回给用户,实现性能优化   做了proxy代理，可以削减api Nodejs &amp;lt;==&amp;gt; java 之间的通信很快 100ms以内搞定 一般10ms,不用使用http,http是昂贵和缓慢的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A8%A1%E5%BC%8F.jpg">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/IO%E7%B1%BB%E5%9E%8B.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E7%AC%A6.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/Node%E5%AF%B9%E5%BC%82%E6%AD%A5IO%E7%9A%84%E5%AE%9E%E7%8E%B0.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/scavenge%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/mark_sweep&mark_compact.png">
+<meta property="og:updated_time" content="2019-06-18T14:06:59.398Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大规模NodeJS项目架构与优化">
+<meta name="twitter:description" content="大规模NodeJS项目架构与优化前端使用NodeJS的意义与优势 proxy代理跨越，自给自足提供api,前端控制路由，前后端完全分离 vue的同构化，实现SSR服务端渲染，将组件拼接成html,返回给用户,实现性能优化   做了proxy代理，可以削减api Nodejs &amp;lt;==&amp;gt; java 之间的通信很快 100ms以内搞定 一般10ms,不用使用http,http是昂贵和缓慢的">
+<meta name="twitter:image" content="https://wangrenjie1.github.io/assets/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A8%A1%E5%BC%8F.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://wangrenjie1.github.io/2019/06/18/大规模NodeJS项目架构与优化/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>大规模NodeJS项目架构与优化 | 嘻嘻の哈哈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">嘻嘻の哈哈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Be the best version of you</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/wangrenjie1" class="github-corner" title="Please give a star" aria-label="Please give a star" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wangrenjie1.github.io/2019/06/18/大规模NodeJS项目架构与优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Richard">
+      <meta itemprop="description" content="Wechat:kannihappy <br/>Hobbies:打台球,旅游，英语，看电影，无氧运动">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="嘻嘻の哈哈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">大规模NodeJS项目架构与优化
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-18 16:49:52 / 修改时间：22:06:59" itemprop="dateCreated datePublished" datetime="2019-06-18T16:49:52+08:00">2019-06-18</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/nodejs/" itemprop="url" rel="index"><span itemprop="name">nodejs</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="大规模NodeJS项目架构与优化"><a href="#大规模NodeJS项目架构与优化" class="headerlink" title="大规模NodeJS项目架构与优化"></a>大规模NodeJS项目架构与优化</h1><h2 id="前端使用NodeJS的意义与优势"><a href="#前端使用NodeJS的意义与优势" class="headerlink" title="前端使用NodeJS的意义与优势"></a>前端使用NodeJS的意义与优势</h2><ol>
+<li>proxy代理跨越，自给自足提供api,前端控制路由，前后端完全分离</li>
+<li>vue的同构化，实现SSR服务端渲染，将组件拼接成html,返回给用户,实现性能优化  </li>
+<li>做了proxy代理，可以削减api</li>
+<li>Nodejs &lt;==&gt; java 之间的通信很快 100ms以内搞定 一般10ms,不用使用http,http是昂贵和缓慢的</li>
+<li>Nodejs实现跨端 实现PC、物联网、涉及到系统的层次，浏览器是无法实现的</li>
+<li>做游戏的中间层，因为NodeJS支持大量的吞吐并发，而且占用的服务器性能少，节省企业成本</li>
+</ol>
+<h2 id="前端开发的几种模式"><a href="#前端开发的几种模式" class="headerlink" title="前端开发的几种模式"></a>前端开发的几种模式</h2><p><img src="/assets/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A8%A1%E5%BC%8F.jpg" alt></p>
+<ol>
+<li>SPA模式（CSR）： 前端使用vue-cli,本质是产生一个index.html，使用假路由（history/hash）页面跳转,CSR渲染模式，会出现跨域问题，使用代理proxy（nginx/nodejs）处理，使用nodejs的时候，例如后端框架koa会产生一个真路由，这样的话，假如前端路由访问a/b,后端也有个路由a/b,这样页面就会返回真路由数据，显示一段json,这样是不行的。可以通过koa2-connect-history-api-fallback,让页面不管怎样都跳转到index.html，设置白名单，例如api/a/b解决真假路由问题。</li>
+<li>MPA模式(SSR)：nodejs+swig+vuejs，这样的话就相当于把Vuejs当JQ用，Swig后端的模板引擎</li>
+<li>纯MPA模式（SSR）: swig+nodejs</li>
+<li>同构化（以后详细再唠）</li>
+</ol>
+<h2 id="异步IO原理浅析"><a href="#异步IO原理浅析" class="headerlink" title="异步IO原理浅析"></a>异步IO原理浅析</h2><h3 id="异步IO的好处"><a href="#异步IO的好处" class="headerlink" title="异步IO的好处"></a>异步IO的好处</h3><ol>
+<li><p>前端通过异步IO可以消除UI阻塞</p>
+</li>
+<li><p>假设请求资源A的时间为M,请求资源B的时间为N,那么同步请求时间为M+N，如果是异步方式占用时间就是Max(M,N)</p>
+</li>
+<li><p>随着业务的复杂，会引入分布式系统，时间会线性的增加，M+N+…和Max(M,N)，这会放大同步和异步之间的差异</p>
+</li>
+<li><p>I/O是昂贵的，分布式I/O是更昂贵的。 </p>
+<ul>
+<li>I/O的一些基础知识<ul>
+<li>I/O的类型<br><img src="/assets/IO%E7%B1%BB%E5%9E%8B.png" alt><br>CPU时钟周期:1/cpu主频 =&gt; 1s/3.1 GHz</li>
+<li>文件操作符：系统操作文件是通过文件操作符的，而文件操作符是有限的<br><img src="/assets/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E7%AC%A6.png" alt></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>NodeJS适用于IO密集型不适合用CPU密集型</p>
+<ul>
+<li>IO密集型： 需要大量的文件读写，一个网站很多人访问</li>
+<li>CPU密集型： 需要精密准确的计算，一个人访问网站，但是需要大量的计算，接近底层语言适合</li>
+<li>Node对异步IO的实现<br> <img src="/assets/Node%E5%AF%B9%E5%BC%82%E6%AD%A5IO%E7%9A%84%E5%AE%9E%E7%8E%B0.png" alt><h3 id="几个特殊的API"><a href="#几个特殊的API" class="headerlink" title="几个特殊的API"></a>几个特殊的API</h3></li>
+</ul>
+<ol>
+<li><p>setTimeout和setInterval线程池不参与 Event loop，LIBUV 不管这些。</p>
+</li>
+<li><p>Process.nextTick() 实现类似 setTimeout(function(){},0);当前不执行，放入队列中，在下一轮循环中取出。</p>
+</li>
+<li><p>setImmediate()比Process.nextTick()优先级高</p>
+<blockquote>
+<p><strong>同步 &gt; (异步队列优先) &gt; nextTick &gt; Promise &gt; setTimeout(时间) &gt; setImmediate</strong></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line"> &#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"> setImmediate(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line"> &#125;);</span><br><span class="line"></span><br><span class="line"> process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="number">3</span>);</span><br><span class="line"> &#125;);</span><br><span class="line"></span><br><span class="line"> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resovle,reject</span>)=&gt;</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="number">4</span>);</span><br><span class="line">     resovle(<span class="number">4</span>);</span><br><span class="line"> &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="number">5</span>);</span><br><span class="line"> &#125;);</span><br><span class="line"> <span class="built_in">console</span>.log(<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行结果： 4 6  3 5 1 2</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>//  4 声明的Promise是同步的  then是异步的</li>
+<li>//  6 同步队列</li>
+<li>//  3 process.nextTick() 是 Node 的一个定时器，让任务可以在指定的时间运行。其中 Node 一共提供了4个定时器，它们分别是 setTimeout()、setInterval()、setImmediate()、process.nextTick()。process.nextTick它是在本轮循环执行的，而且是所有异步任务里面最快执行的。</li>
+<li>setTimeout和setImmediate是哥俩，这俩优先级得看时间，当setTimeout的时间是0的时候 setTimeout&gt;setTimmediate</li>
+</ul>
+</li>
+<li><p>Sleep函数的实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hello'</span>)</span><br><span class="line">    <span class="keyword">await</span> sleep(<span class="number">1000</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'world!'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">ms</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> setTimeout(resolve, ms))</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="内存管理与优化"><a href="#内存管理与优化" class="headerlink" title="内存管理与优化"></a>内存管理与优化</h2><h3 id="v8-垃圾回收机制"><a href="#v8-垃圾回收机制" class="headerlink" title="v8 垃圾回收机制"></a>v8 垃圾回收机制</h3><p>V8的垃圾回收策略主要基于分代式垃圾回收机制。在自动垃圾回收的演变过程中,人们发现没有一种垃圾回收算法能够胜任所有场景。V8中内存分为新生代和老生代两代。新生代为存活时间较短对象,老生代中为存活时间较长的对象。</p>
+<h4 id="Scavenge算法"><a href="#Scavenge算法" class="headerlink" title="Scavenge算法"></a>Scavenge算法</h4><ul>
+<li>Scavenge管理新生代内存 </li>
+</ul>
+<blockquote>
+<p>在分代基础上,新生代的对象主要通过Scavenge算法进行垃圾回收,再具体实现时主要采用Cheney算法。Cheney算<br>法是一种采用复制的方式实现的垃圾回收算法。它将内存一分为二,每一个空间称为semispace。这两个semispace中<br>一个处于使用,一个处于闲置。处于使用的称之为From,闲置的称之为To.分配对象时先分配到From,当开始进行垃圾回收时,检查From存活对象赋值到To.非存活被释放。然后互换位置。再次进行回收,发现被回收过直接晋升,或者发现To空间已经使用了超过25%。他的缺点是只能使用堆内存的一半,这是一个典型的空间换时间的办法,但是新生代声明周期较短,恰恰就适合这个算法。</p>
+</blockquote>
+<p>新生代是等到 from 沾满了 就进行GC,<br><img src="/assets/scavenge%E7%AE%97%E6%B3%95.png" alt></p>
+<h4 id="老生代如何管理内存的"><a href="#老生代如何管理内存的" class="headerlink" title="老生代如何管理内存的"></a>老生代如何管理内存的</h4><blockquote>
+<p>V8老生代主要采用Mark-Sweep和Mark-compact,在使用Scavenge不合适。一个是对象较多需要赋值量太大而且还是没能解决空间问题。Mark-Sweep是标记清楚,标记那些死亡的对象,然后清除。但是清除过后出现内存不连续的情况,所以我们要使用Mark-compact,他是基于Mark-Sweep演变而来的,他先将活着的对象移到一边,移动完成后,直接清理边界外的内存。当CPU空间不足的时候会非常的高效。V8后续还引入了延迟处理,增量处理,并计划引入并行标记处理。</p>
+</blockquote>
+<p>老生代采用标记清除，间歇性，不定期的GC<br><img src="/assets/mark_sweep&mark_compact.png" alt></p>
+<ul>
+<li>老生代64位系统下约为1.4GB,32位操作系统下是0.7G,  新生代64位是32M 32位是16M</li>
+<li>Process.memoryUsage<ul>
+<li>rss :所有内存使用包括堆区和栈区</li>
+<li>heaptTotal:堆区占用内存</li>
+<li>heapUsed:已使用到的堆部分</li>
+<li>external: V8引擎C++对象占用(GC动态变化)</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见内存泄露问题"><a href="#常见内存泄露问题" class="headerlink" title="常见内存泄露问题"></a>常见内存泄露问题</h3><ol>
+<li>无限制增长的数组</li>
+<li>无线设置属性和值</li>
+<li>任何模块内的私有变量和方法均是永驻内存的 a = null</li>
+<li>大循环，无GC机会</li>
+</ol>
+<h2 id="Nodejs-集群的应用"><a href="#Nodejs-集群的应用" class="headerlink" title="Nodejs 集群的应用"></a>Nodejs 集群的应用</h2><p>本机启动负载均衡使用PM2,网络启动负载均衡使用nginx</p>
+<h3 id="PM2"><a href="#PM2" class="headerlink" title="PM2"></a>PM2</h3><p>pm2 是一个带有负载均衡功能的Node应用的进程管理器.当你要把你的独立代码利用全部的服务器上的所有CPU,并保证进程永远都活着,0秒的重载。</p>
+<ol>
+<li>内建负载均衡(使用Node cluster 集群模块)</li>
+<li>后台运行</li>
+<li>0秒停机重载</li>
+<li>具有Ubuntu和CentOS 的启动脚本</li>
+<li>停止不稳定的进程(避免无限循环)</li>
+<li>控制台检测</li>
+<li>提供 HTTP API</li>
+<li>远程控制和实时的接口API ( Nodejs 模块,允许和PM2进程管理器交互 )</li>
+</ol>
+<p>前端集群需要会配置: nginx cdn pm2</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/nodejs/" rel="tag"><i class="fa fa-tag"></i> nodejs</a>
+          
+            <a href="/tags/架构/" rel="tag"><i class="fa fa-tag"></i> 架构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/18/HTTP协议那些事/" rel="next" title="HTTP协议那些事">
+                <i class="fa fa-chevron-left"></i> HTTP协议那些事
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/19/express初识/" rel="prev" title="express初识">
+                express初识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/touxiang.png" alt="Richard">
+            
+              <p class="site-author-name" itemprop="name">Richard</p>
+              <div class="site-description motion-element" itemprop="description">Wechat:kannihappy <br>Hobbies:打台球,旅游，英语，看电影，无氧运动</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/wangrenjie1" title="GitHub &rarr; https://github.com/wangrenjie1" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://juejin.im/user/5ca190cfe51d45054e3b95f6" title="掘金 &rarr; https://juejin.im/user/5ca190cfe51d45054e3b95f6" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>掘金</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#大规模NodeJS项目架构与优化"><span class="nav-number">1.</span> <span class="nav-text">大规模NodeJS项目架构与优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端使用NodeJS的意义与优势"><span class="nav-number">1.1.</span> <span class="nav-text">前端使用NodeJS的意义与优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端开发的几种模式"><span class="nav-number">1.2.</span> <span class="nav-text">前端开发的几种模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步IO原理浅析"><span class="nav-number">1.3.</span> <span class="nav-text">异步IO原理浅析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#异步IO的好处"><span class="nav-number">1.3.1.</span> <span class="nav-text">异步IO的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几个特殊的API"><span class="nav-number">1.3.2.</span> <span class="nav-text">几个特殊的API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理与优化"><span class="nav-number">1.4.</span> <span class="nav-text">内存管理与优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#v8-垃圾回收机制"><span class="nav-number">1.4.1.</span> <span class="nav-text">v8 垃圾回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Scavenge算法"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Scavenge算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#老生代如何管理内存的"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">老生代如何管理内存的</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见内存泄露问题"><span class="nav-number">1.4.2.</span> <span class="nav-text">常见内存泄露问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nodejs-集群的应用"><span class="nav-number">1.5.</span> <span class="nav-text">Nodejs 集群的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PM2"><span class="nav-number">1.5.1.</span> <span class="nav-text">PM2</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">^_^ ~~ My pleasure can help you, could you please give me a star on github.</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,0" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":200,"height":400,"hOffset":10,"vOffset":20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+<script type="text/javascript" src="/js/clicklove.js"></script>
+</html>
