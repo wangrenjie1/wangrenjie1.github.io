@@ -1,0 +1,128 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: 嘻嘻の哈哈
+subtitle: Be the best version of you
+description: Wechat:kannihappy <br/>Hobbies:打台球,旅游，英语，看电影，无氧运动
+keywords: 前端博客,JavaScript,html5,css3,Jquery,NodeJs,Ubuntu
+author: Richard
+language: zh-CN
+timezone: Asia/Shanghai
+
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: https://wangrenjie1.github.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render: README.md
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post  #原来是post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace:
+  
+# Home page setting
+# path: Root path for your blogs index page. (default = '')
+# per_page: Posts displayed per page. (0 = disable pagination)
+# order_by: Posts order. (Order by date descending by default)
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+  
+# Category & Tag
+default_category: uncategorized
+category_map:
+  css: CSS
+  html: HTML
+  js: JS
+  linux: Linux
+  php: PHP
+  node: NodeJs
+  other: Other
+  vue: Vue
+  webpack: Webpack
+tag_map:
+  linux: linux
+  ubuntu: ubuntu
+  javascript: javascript
+  css: css
+  php: php
+  article: article
+
+
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 10
+pagination_dir: page
+
+archive_generator: #归档页的配置
+  per_page: 30 #归档页每页博客数
+  yearly: true #按年归档
+  monthly: true #按月归档
+
+#标签页的分页设置
+tag_generator:
+  per_page: 20 #标签页每页博客数
+
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: next
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type:git
+  repo:git@github.com:wangrenjie1/wangrenjie1.github.io.git
+  barnch:master
+
+live2d:
+  enable: true
+  scriptFrom: local
+  pluginRootPath: live2dw/
+  pluginJsPath: lib/
+  pluginModelPath: assets/
+  tagMode: false
+  model:
+    use: live2d-widget-model-hijiki #选择哪种模型 live2d-widget-model-chitose
+  display: #放置位置和大小
+    position: right
+    width: 200
+    height: 400
+    hOffset: 10
+    vOffset: 20
+  mobile:
+    show: true #是否在手机端显示
+    scale: 0.5
