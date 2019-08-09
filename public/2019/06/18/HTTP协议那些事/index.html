@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="HTTP协议的相关事情HTTP请求模型 上图描述的http最最最基本的一个概况  两个端：客户端 和 服务端 两个动作：  客户端向服务端发起请求(request) 服务端对客户端进行响应(response)    http协议是一种无状态协议，它维持不住当前的通信状态。即：客户端发起请求，服务端响应，这就结束了，这是独立的一次轮回，如果想再请求，那么就会再来一次 请求响应，这两次轮回是相互独立的">
+<meta name="keywords" content="Http协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP协议那些事">
+<meta property="og:url" content="https://wangrenjie1.github.io/2019/06/18/HTTP协议那些事/index.html">
+<meta property="og:site_name" content="嘻嘻の哈哈">
+<meta property="og:description" content="HTTP协议的相关事情HTTP请求模型 上图描述的http最最最基本的一个概况  两个端：客户端 和 服务端 两个动作：  客户端向服务端发起请求(request) 服务端对客户端进行响应(response)    http协议是一种无状态协议，它维持不住当前的通信状态。即：客户端发起请求，服务端响应，这就结束了，这是独立的一次轮回，如果想再请求，那么就会再来一次 请求响应，这两次轮回是相互独立的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/HTTP%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A1%8C%E4%B8%BA.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E5%8D%8F%E8%AE%AE%E6%A0%88.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E8%AF%B7%E6%B1%82%E8%AF%A6%E8%A7%A3%E5%9B%BE.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E8%AF%B7%E6%B1%82%E8%AF%A6%E8%A7%A3%E5%9B%BE%E4%BA%8C.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E5%93%8D%E5%BA%94.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/cookie%E7%9A%84%E4%BD%BF%E7%94%A8.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/session%E7%9A%84%E4%BD%BF%E7%94%A8.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/http%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B61.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E2%85%A1.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/http2%E5%8D%8F%E8%AE%AE.png">
+<meta property="og:image" content="https://wangrenjie1.github.io/assets/%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.png">
+<meta property="og:updated_time" content="2019-06-18T08:18:18.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP协议那些事">
+<meta name="twitter:description" content="HTTP协议的相关事情HTTP请求模型 上图描述的http最最最基本的一个概况  两个端：客户端 和 服务端 两个动作：  客户端向服务端发起请求(request) 服务端对客户端进行响应(response)    http协议是一种无状态协议，它维持不住当前的通信状态。即：客户端发起请求，服务端响应，这就结束了，这是独立的一次轮回，如果想再请求，那么就会再来一次 请求响应，这两次轮回是相互独立的">
+<meta name="twitter:image" content="https://wangrenjie1.github.io/assets/HTTP%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9E%8B.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://wangrenjie1.github.io/2019/06/18/HTTP协议那些事/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>HTTP协议那些事 | 嘻嘻の哈哈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">嘻嘻の哈哈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Be the best version of you</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/wangrenjie1" class="github-corner" title="Please give a star" aria-label="Please give a star" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wangrenjie1.github.io/2019/06/18/HTTP协议那些事/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Richard">
+      <meta itemprop="description" content="Wechat:kannihappy <br/>Hobbies:打台球,旅游，英语，看电影，无氧运动">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="嘻嘻の哈哈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTTP协议那些事
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-18 13:28:47 / 修改时间：16:18:18" itemprop="dateCreated datePublished" datetime="2019-06-18T13:28:47+08:00">2019-06-18</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Other/" itemprop="url" rel="index"><span itemprop="name">other</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="HTTP协议的相关事情"><a href="#HTTP协议的相关事情" class="headerlink" title="HTTP协议的相关事情"></a>HTTP协议的相关事情</h1><h2 id="HTTP请求模型"><a href="#HTTP请求模型" class="headerlink" title="HTTP请求模型"></a>HTTP请求模型</h2><p><img src="/assets/HTTP%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9E%8B.png" alt></p>
+<p>上图描述的http最最最基本的一个概况</p>
+<ul>
+<li>两个端：客户端 和 服务端</li>
+<li>两个动作： <ul>
+<li>客户端向服务端发起<strong>请求(request)</strong></li>
+<li>服务端对客户端进行<strong>响应(response)</strong></li>
+</ul>
+</li>
+</ul>
+<p>http协议是一种无状态协议，它维持不住当前的通信状态。<br>即：客户端发起请求，服务端响应，这就结束了，这是独立的一次轮回，如果想再请求，那么就会再来一次 请求响应，这两次轮回是相互独立的，互不影响。</p>
+<h2 id="浏览器行为与http协议"><a href="#浏览器行为与http协议" class="headerlink" title="浏览器行为与http协议"></a>浏览器行为与http协议</h2><p><img src="/assets/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A1%8C%E4%B8%BA.png" alt><br>处理流程：</p>
+<ol>
+<li>输入网址并回车</li>
+<li>解析域名</li>
+<li>浏览器发送http请求</li>
+<li>服务器处理请求</li>
+<li>服务器返回http响应</li>
+<li>浏览器处理html页面</li>
+<li>继续请求其他资源</li>
+</ol>
+<p><strong>总结：</strong> </p>
+<blockquote>
+<p>第一步 用户在浏览器输入网址，对浏览器发号指令，带我去google.com,这样浏览器就接受到了这个指令。<br>第二步 浏览器检查网络是否通畅，在局域网中，向防火墙或者家用路由器或者网关，提交密码，翻出墙外。这里所说的墙内就是我们的局域网，墙外则是互联网。<br>第三步 google.com这是一个字符串，浏览器是不认识这个字符串的  它需要把这个字符串转化为 IP地址，这个时候它就去请问 DNS 服务器 ，找到对应的IP地址（Ipv4协议）。google.com相当于是一个名字,除了你自己没人知道具体地址在哪，而IP地址则是一个具体的门牌号，这样浏览器就知道往哪走了。<br>第四步 知道了地址，就可以上路了，这里并不是 直接过去的，它需要多个路由的转发，类似于快递的运送<br>第五步 浏览器顺着网线 终于到了 google的服务器对应的地址。但是这个地址上有很多的服务器。也就是图4上描述的一棵树上站了很多只鸟🐦。一只鸟🐦就代表一个服务器，也就是说这么多服务器有一个共同的出口，即这个ip地址，这些服务器怎么公用了一个ip地址这就涉及到了反向代理，后续解释。反向代理帮你指定到你想要访问的服务器，到此为止，request请求就结束了<br>第六步 服务器处理请求，处理业务逻辑，处理完的数据返回给浏览器，这个过程就是response。<br>最后 浏览器将获得的数据 进行一系列的处理 整合渲染之后返回给用户</p>
+</blockquote>
+<h2 id="什么是HTTP协议"><a href="#什么是HTTP协议" class="headerlink" title="什么是HTTP协议"></a>什么是HTTP协议</h2><p>HTTP是超文本传输协议，从www浏览器传输到本地浏览器的一种传输协议，网站是基于HTTP协议的，例如网站的图片、css、js等都是基于http协议进行传输的</p>
+<p><strong>http协议</strong>是由从客户端到服务器的请求和从服务器到客户端的响应进行的约束和规范，大家需要遵守的一种规范</p>
+<p>http 协议主要是通过 request请求和 response 这两个动作进行约束的</p>
+<h2 id="了解TCP-IP协议栈"><a href="#了解TCP-IP协议栈" class="headerlink" title="了解TCP/IP协议栈"></a>了解TCP/IP协议栈</h2><p>协议栈是分层的  下图中<br> 左图为 ISO/OSI 协议  这是一种建议规范<br> 右图为TCP/IP协议  这是一种事实协议<br> <img src="/assets/%E5%8D%8F%E8%AE%AE%E6%A0%88.png" alt></p>
+<ol>
+<li>应用层<br>为用户提供所需要的各种服务，例如：HTTP、FTP、DNS等等</li>
+<li>传输层<br>为应用层实体提供端到端的通信功能，保证数据包的顺序传送以及数据的完整性<br>TCP 传输控制协议，维持通信状态   UDP 用户数据报协议</li>
+<li>网络层<br>分配ip地址，PPP协议，建立通信链路</li>
+<li>数据链路层<br>物理层上传输的信号</li>
+<li>物理层<br>看到见摸得着的硬件，网线，还有一些看不见摸不着的载体 无线电波</li>
+</ol>
+<blockquote>
+<p>http协议属于应用层，在TCP/IP协议之上，HTTP协议 与HTTPS协议大部分是相同的，区别在于 https 在应用层中多添加了加密协议，如果按照ISO/OSI协议的话，也就是加在了表示层和会话层中。<strong>http默认端口是80，https默认端口是443</strong>。</p>
+</blockquote>
+<h2 id="HTTP的工作过程"><a href="#HTTP的工作过程" class="headerlink" title="HTTP的工作过程"></a>HTTP的工作过程</h2><p>一次HTTP操作称为一个事务</p>
+<blockquote>
+<p>事务是由若干个步骤构成的，这些若干个步骤必须严格的按照一定的顺序去执行，并且其中的一个步骤失败了，那么整个事情就失败了。</p>
+</blockquote>
+<p>http 操作过程分为四步：</p>
+<ol>
+<li>首先客户机与服务器需要建立链接(在 TCP层次)。只要点击某个超级链接，http的工作开始。</li>
+<li>建立连接后，客户机发送一个请求给服务器，请求方式的格式为：统一资源标识符（URL）、协议版本号，后边是MIME信息包括请求修饰符、客户机信息和可能的内容。 这一步是 http层面上的 request</li>
+<li>服务器接到请求后，给予相应的响应信息，其格式为一个状态行，包括信息的协议版本号、一个成功或错误的代码，后边是MIME信息包括服务器信息、实体信息和可能的内容。 这一步是http层面上的response</li>
+<li>客户端接受服务器所返回的信息通过浏览器显示在用户的显示屏上，然后客户机与服务器断开链接，这一步骤分为两层  一层是浏览器进行渲染，另一层面是在TCP层面上与服务器断开链接</li>
+</ol>
+<h2 id="请求和响应"><a href="#请求和响应" class="headerlink" title="请求和响应"></a>请求和响应</h2><ul>
+<li>HTTP请求组成：请求行、消息报头、请求正文</li>
+<li>HTTP响应组成：状态行、消息报头、响应正文</li>
+<li>请求行组成：以一个方法符号开头，后面跟着请求的URL和协议的版本。</li>
+<li>状态行组成：服务器HTTP协议的版本，服务器返回的响应状态码和状态码的文本描述</li>
+</ul>
+<h3 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h3><p><img src="/assets/%E8%AF%B7%E6%B1%82%E8%AF%A6%E8%A7%A3%E5%9B%BE.png" alt><br><img src="/assets/%E8%AF%B7%E6%B1%82%E8%AF%A6%E8%A7%A3%E5%9B%BE%E4%BA%8C.png" alt></p>
+<h3 id="响应"><a href="#响应" class="headerlink" title="响应"></a>响应</h3><p><img src="/assets/%E5%93%8D%E5%BA%94.png" alt></p>
+<h3 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h3><ul>
+<li>GET             请求获取Request-URI所标识的资源</li>
+<li>POST          在Request-URI所标识的资源后附加新的数据</li>
+<li>HEAD          请求获取由Request-URI所标识的资源的响应消息报头</li>
+<li>PUT             请求服务器存储一个资源，并用Request-URI作为其标识</li>
+<li>DELETE       请求服务器删除Request-URI所标识的资源</li>
+<li>TRACE         请求服务器回送收到的请求信息，主要用于测试或诊断</li>
+<li>CONNECT   HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。</li>
+<li>OPTIONS  请求查询服务器的性能，或者查询与资源相关的选项和需求</li>
+</ul>
+<h3 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h3><p>状态代码有三位数字组成，第一个数字定义了响应的类别，且有五种可能取值：<br>1xx：指示信息–表示请求已接收，继续处理<br>2xx：成功–表示请求已被成功接收、理解、接受<br>3xx：重定向–要完成请求必须进行更进一步的操作<br>4xx：客户端错误–请求有语法错误或请求无法实现<br>5xx：服务器端错误–服务器未能实现合法的请求</p>
+<h3 id="常用的请求报头"><a href="#常用的请求报头" class="headerlink" title="常用的请求报头"></a>常用的请求报头</h3><ul>
+<li><p>Accept请求报头域用于指定客户端接受哪些类型的信息。eg：Accept：image/gif，Accept：text/</p>
+</li>
+<li><p>htmlAccept-Charset请求报头域用于指定客户端接受的字符集。</p>
+</li>
+<li><p><strong>Accept-Encoding：Accept-Encoding请求报<br>头域类似于Accept，但是它是用于指定可接受的内容编码。</strong></p>
+</li>
+<li><p>Accept-Language请求报头域类似于Accept，但是它是用于指定一种自然语言。</p>
+</li>
+<li><p>Authorization请求报头域主要用于证明客户端有权查看某个资源。当浏览器访问一个页面时，如果收到服<br>务器的响应代码为401（未授权），可以发送一个包含Authorization请求报头域的请求，要求服务器对其进<br>行验证。</p>
+</li>
+<li><p>Host请求报头域主要用于指定被请求资源的Internet主机和端口号，它通常从HTTP URL中提取出来的，发<br>送请求时，该报头域是必需的。</p>
+</li>
+<li><p>User-Agent请求报头域允许客户端将它的操作系统、浏览器和其它属性告诉服务器。</p>
+</li>
+</ul>
+<h3 id="常用的响应报头"><a href="#常用的响应报头" class="headerlink" title="常用的响应报头"></a>常用的响应报头</h3><ul>
+<li>Location响应报头域用于重定向接受者到一个新的位置。<strong>Location响应报头域常用在更换域名的时候</strong>。</li>
+<li>Server响应报头域包含了服务器用来处理请求的软件信息。与User-Agent请求报头域是相对应的。</li>
+<li>WWW-Authenticate响应报头域必须被包含在401（未授权的）响应消息中，客户端收到401响应消息时候，并发送Authorization报头域请求服务器对其进行验证时，服务端响应报头就包含该报头域。</li>
+</ul>
+<h3 id="常用的实体报头"><a href="#常用的实体报头" class="headerlink" title="常用的实体报头"></a>常用的实体报头</h3><p>请求和响应消息都可以传送一个实体。一个实体由实体报头域和实体正文组成，但并不是说实体报头域和实体正文要在一起发送，可以只发送实体报头域。实体报头定义了关于实体正文（eg：有无实体正文）和请求所标识的资源的元信息。</p>
+<ul>
+<li>Content-Encoding实体报头域被用作媒体类型的修饰符，它的值指示了已经被应用到实体正文的附加内容的编码，因而要获得Content-Type报头域中所引用的媒体类型，必须采用相应的解码机制。</li>
+<li>Content-Language实体报头域描述了资源所用的自然语言。</li>
+<li>Content-Length实体报头域用于指明实体正文的长度，以字节方式存储的十进制数字来表示。</li>
+<li>Content-Type实体报头域用语指明发送给接收者的实体正文的媒体类型。</li>
+<li>Last-Modified实体报头域用于指示资源的最后修改日期和时间。</li>
+<li>Expires实体报头域给出响应过期的日期和时间。</li>
+</ul>
+<p><a href="https://www.cnblogs.com/xxblog/p/6536687.html" target="_blank" rel="noopener">关于报头这篇文章讲的很清楚，点此链接</a></p>
+<h2 id="cookies与session"><a href="#cookies与session" class="headerlink" title="cookies与session"></a>cookies与session</h2><ul>
+<li>cookie是保存在客户端的  而session 是保存在服务端的</li>
+<li>当客户端每次发送URL请求时，cookie的内容都会附加在请求头上</li>
+<li>Session则保存在服务器端，通过唯一的值sessionID来区别每一个用户。SessionID随每个连接请求发送到服务器，服务器根据sessionID来识别客户端，再通过session 的key获取session值。</li>
+</ul>
+<h3 id="cookie-的使用"><a href="#cookie-的使用" class="headerlink" title="cookie 的使用"></a>cookie 的使用</h3><p><img src="/assets/cookie%E7%9A%84%E4%BD%BF%E7%94%A8.png" alt></p>
+<p>1)Cookie：客户端将服务器设置的Cookie返回到服务器;<br>2)Set-Cookie：服务器向客户端设置Cookie;</p>
+<p>服务器在响应消息中用Set-Cookie头将Cookie的内容回送给客户端，客户端在新的请求中将相同的内容携带在Cookie<br>头中发送给服务器。从而实现会话的保持。</p>
+<h3 id="session-的使用"><a href="#session-的使用" class="headerlink" title="session 的使用"></a>session 的使用</h3><p><img src="/assets/session%E7%9A%84%E4%BD%BF%E7%94%A8.png" alt></p>
+<h2 id="HTTP缓存机制"><a href="#HTTP缓存机制" class="headerlink" title="HTTP缓存机制"></a>HTTP缓存机制</h2><p><img src="/assets/http%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6.png" alt></p>
+<ul>
+<li>缓存会根据请求保存输出内容的副本，例如html页面，图片，文件，当下一个请求来到的时候：如果是相同的URL，缓存直接使用副本响应访问请求，而不是向源服务器再次发送请求。</li>
+<li>缓存的优点：减少相应延迟  减少网络带宽消耗</li>
+</ul>
+<p>两种缓存策略；</p>
+<ul>
+<li>Etag/If-None-Match策略</li>
+<li>Last-Modified/If-Modified-Since策略</li>
+</ul>
+<p>缓存流程：<br><img src="/assets/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B61.png" alt><br><img src="/assets/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E2%85%A1.png" alt></p>
+<h2 id="https协议分析"><a href="#https协议分析" class="headerlink" title="https协议分析"></a>https协议分析</h2><ul>
+<li>采用非对称加密手段，数字证书策略  CA</li>
+<li>HTTPS协议、SSL协议、TLS协议、握手协议的关系<ul>
+<li>HTTPS是Hypertext Transfer Protocol over Secure Socket Layer的缩写，即HTTP over SSL，可理解为基于SSL的HTTP协议。HTTPS协议安全是由SSL协议实现的。</li>
+<li>SSL协议是一种记录协议，扩展性良好，可以很方便的添加子协议，而握手协议便是SSL协议的一个子协议</li>
+<li>TLS协议是SSL协议的后续版本，本文中涉及的SSL协议默认是TLS协议1.2版本</li>
+</ul>
+</li>
+</ul>
+<h2 id="http2-协议分析"><a href="#http2-协议分析" class="headerlink" title="http2 协议分析"></a>http2 协议分析</h2><ul>
+<li>使用二进制格式传输，更高效、更紧凑</li>
+<li>对报头压缩，降低开销。</li>
+<li>多路复用，一个网络连接实现并行请求</li>
+<li>服务器主动推送，减少请求的延迟</li>
+<li>默认使用加密<br><img src="/assets/http2%E5%8D%8F%E8%AE%AE.png" alt></li>
+</ul>
+<h2 id="了解HTTP3"><a href="#了解HTTP3" class="headerlink" title="了解HTTP3"></a>了解HTTP3</h2><ul>
+<li>由google 创造  原名叫  HTTP-over-QUIC</li>
+<li>基于 QUIC协议 </li>
+<li>HTTP3 不是http2的扩展</li>
+<li>HTTP3 将是一个全新的协议  目前处于测试阶段</li>
+</ul>
+<h2 id="HTTP与反向代理"><a href="#HTTP与反向代理" class="headerlink" title="HTTP与反向代理"></a>HTTP与反向代理</h2><p><img src="/assets/%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.png" alt><br>正向代理： 客户端——》局域网内 —proxy—》 互联网<br>反向代理： 互联网  —proxy—》服务器</p>
+<p>反向代理的作用：</p>
+<ul>
+<li>加密和SSL加速</li>
+<li>负载均衡</li>
+<li>缓存静态内容</li>
+<li>压缩</li>
+<li>减速上传</li>
+<li>安全</li>
+<li>外网发布</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Http协议/" rel="tag"><i class="fa fa-tag"></i> Http协议</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/18/大规模NodeJS项目架构与优化/" rel="prev" title="大规模NodeJS项目架构与优化">
+                大规模NodeJS项目架构与优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/touxiang.png" alt="Richard">
+            
+              <p class="site-author-name" itemprop="name">Richard</p>
+              <div class="site-description motion-element" itemprop="description">Wechat:kannihappy <br>Hobbies:打台球,旅游，英语，看电影，无氧运动</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/wangrenjie1" title="GitHub &rarr; https://github.com/wangrenjie1" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://juejin.im/user/5ca190cfe51d45054e3b95f6" title="掘金 &rarr; https://juejin.im/user/5ca190cfe51d45054e3b95f6" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>掘金</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP协议的相关事情"><span class="nav-number">1.</span> <span class="nav-text">HTTP协议的相关事情</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP请求模型"><span class="nav-number">1.1.</span> <span class="nav-text">HTTP请求模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器行为与http协议"><span class="nav-number">1.2.</span> <span class="nav-text">浏览器行为与http协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是HTTP协议"><span class="nav-number">1.3.</span> <span class="nav-text">什么是HTTP协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#了解TCP-IP协议栈"><span class="nav-number">1.4.</span> <span class="nav-text">了解TCP/IP协议栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP的工作过程"><span class="nav-number">1.5.</span> <span class="nav-text">HTTP的工作过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请求和响应"><span class="nav-number">1.6.</span> <span class="nav-text">请求和响应</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求"><span class="nav-number">1.6.1.</span> <span class="nav-text">请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#响应"><span class="nav-number">1.6.2.</span> <span class="nav-text">响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求方法"><span class="nav-number">1.6.3.</span> <span class="nav-text">请求方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP状态码"><span class="nav-number">1.6.4.</span> <span class="nav-text">HTTP状态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的请求报头"><span class="nav-number">1.6.5.</span> <span class="nav-text">常用的请求报头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的响应报头"><span class="nav-number">1.6.6.</span> <span class="nav-text">常用的响应报头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的实体报头"><span class="nav-number">1.6.7.</span> <span class="nav-text">常用的实体报头</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cookies与session"><span class="nav-number">1.7.</span> <span class="nav-text">cookies与session</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cookie-的使用"><span class="nav-number">1.7.1.</span> <span class="nav-text">cookie 的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session-的使用"><span class="nav-number">1.7.2.</span> <span class="nav-text">session 的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP缓存机制"><span class="nav-number">1.8.</span> <span class="nav-text">HTTP缓存机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#https协议分析"><span class="nav-number">1.9.</span> <span class="nav-text">https协议分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http2-协议分析"><span class="nav-number">1.10.</span> <span class="nav-text">http2 协议分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#了解HTTP3"><span class="nav-number">1.11.</span> <span class="nav-text">了解HTTP3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP与反向代理"><span class="nav-number">1.12.</span> <span class="nav-text">HTTP与反向代理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">^_^ ~~ My pleasure can help you, could you please give me a star on github.</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,0" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":200,"height":400,"hOffset":10,"vOffset":20},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+<script type="text/javascript" src="/js/clicklove.js"></script>
+</html>
