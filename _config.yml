@@ -109,7 +109,7 @@ deploy:
 
 live2d:
   enable: true
-  scriptFrom: localgit
+  scriptFrom: local
   pluginRootPath: live2dw/
   pluginJsPath: lib/
   pluginModelPath: assets/
