@@ -1955,6 +1955,16 @@ live2d-widget-model-chitose@^1.0.5:
   resolved "https://registry.yarnpkg.com/live2d-widget-model-chitose/-/live2d-widget-model-chitose-1.0.5.tgz#e6aed2d6343e50f316b97967394889583bd407c3"
   integrity sha512-gUyTulOh9+e9JU/8oxV7GpFLrI/nRiKIl9k2Nu3gLCsPoUk/pvL5GURj5A0tel5vhiY3hjgBSNKOvyisXfUEww==
 
+live2d-widget-model-gf@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/live2d-widget-model-gf/-/live2d-widget-model-gf-1.0.5.tgz#38e39ae08e4b1ac1a44961eb59ebdaa8753b111a"
+  integrity sha512-VOSFePEOLqg1Hilzdq/Fvv1Hrukrn5c7JR99t+2FFlZ0P59jSvmzTpdXwGIEcGTg/obB3Iw8vME/etrZoqpCdg==
+
+live2d-widget-model-hijiki@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/live2d-widget-model-hijiki/-/live2d-widget-model-hijiki-1.0.5.tgz#c2ddc6b2380be11b8b8bc2df0d82fd6dfa007f11"
+  integrity sha512-1htA3VPgqw5mvs94qHVqy56MjmF1huBXst1SsgphNyeWuZT3aH87I0sF1Ene7WDkyEPnMeR+pX1bJxWa524snA==
+
 live2d-widget-model-wanko@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/live2d-widget-model-wanko/-/live2d-widget-model-wanko-1.0.5.tgz#2833486bc76528ce37e7e04fdbbe623191e03953"
@@ -2398,9 +2408,9 @@ normalize-path@^3.0.0:
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
 normalize-url@^4.1.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.3.0.tgz#9c49e10fc1876aeb76dba88bf1b2b5d9fa57b2ee"
-  integrity sha512-0NLtR71o4k6GLP+mr6Ty34c5GA6CMoEsncKJxvQd8NzPxaHRJNnb5gZE8R1XF4CPIS7QPHLJ74IFszwtNVAHVQ==
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.5.1.tgz#0dd90cf1288ee1d1313b87081c9a5932ee48518a"
+  integrity sha512-9UZCFRHQdNrfTpGg8+1INIg93B6zE0aXMVFkw1WFwvO4SlZywU6aLg5Of0Ap/PgcbSw4LNxvMWXMeugwMCX0AA==
 
 npm-bundled@^1.0.1:
   version "1.0.6"
